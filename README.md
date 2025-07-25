@@ -13,3 +13,7 @@ b. All sheets must have the same number of header rows.
 ( 5 ) The exported files will be saved in the same directory as this file.
 
 ( 6 ) The number of exported sheets can be increased or decreased. If multiple sheets exist, they will be exported to separate Excel files (one file per sheet).
+
+I have uploaded the file to the attachment; simply download it to use.
+
+If you have VBA experience, you may also copy my source code to iterate and optimize it, making it better suited to personalized needs.
