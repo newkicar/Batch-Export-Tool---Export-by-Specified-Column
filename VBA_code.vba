@@ -14,7 +14,7 @@ Sub ExportByDepartment()
     Dim found As Boolean
     Dim num_of_head As Integer
     Dim export_column
-    
+
     On Error GoTo the_end
     num_of_head = CInt(InputBox("Please enter the number of lines for the title section (digits only): ", "Output line count", 1))
     On Error GoTo 0
@@ -38,19 +38,24 @@ Sub ExportByDepartment()
             Next j
             
             'Sort form
-            On Error Resume Next
-            sh.AutoFilter.Sort.SortFields.Clear
-            sh.AutoFilter.Sort.SortFields.Add2 Key:=Range(sh.Cells(num_of_head, j), sh.Cells(num_of_head, j)), SortOn:=xlSortOnValues, _
-                Order:=xlAscending, DataOption:=xlSortNormal
-            With sh.AutoFilter.Sort
+            'Clear sort state if necessary
+            lastRow = sh.Cells(sh.Rows.Count, 1).End(xlUp).Row
+            lastCol = sh.Cells(num_of_head, sh.Columns.Count).End(xlToLeft).Column
+            If sh.AutoFilterMode Then sh.AutoFilterMode = False
+            With sh.Sort
+                .SortFields.Clear
+                .SortFields.Add2 Key:=sh.Cells(num_of_head, j), _
+                    SortOn:=xlSortOnValues, _
+                    Order:=xlAscending, _
+                    DataOption:=xlSortNormal
+                .SetRange sh.Range(sh.Cells(num_of_head, 1), sh.Cells(lastRow, lastCol))
                 .Header = xlYes
                 .MatchCase = False
                 .Orientation = xlTopToBottom
                 .SortMethod = xlPinYin
                 .Apply
             End With
-            On Error GoTo 0
-            
+
             'Loop through each export_basis and add to dictionary
             For i = 2 To sh.Cells(Rows.Count, j).End(xlUp).Row
                 export_basis = sh.Cells(i, j).Value
